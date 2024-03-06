@@ -1,4 +1,4 @@
-# Astro Starter Kit: Blog
+# Personal Website : Suraj Air
 
 ```sh
 npm create astro@latest -- --template blog
