@@ -14,7 +14,7 @@ type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
 const { Content } = await post.render();
-const toDate = (dateString) => {
+const toDate = (dateString: Date) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-GB", {
     day: "numeric",
@@ -31,7 +31,7 @@ const toDate = (dateString) => {
       <p class="mt-2">
         <span class="bg-green-200 text-green-800 text-sm p-1 rounded-md"
           >{post.data.tags?.map((tag) => `#${tag}`).join(", ")}</span
-        > | {toDate(post.data.publishedDate.toLocaleString())}
+        > | {toDate(post.data.publishedDate)}
       </p>
     </div>
     <hr />

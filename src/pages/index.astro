@@ -8,7 +8,7 @@ const { Content: IntroContent } = await introMd.render();
 const blogs = await getCollection("blog");
 const projects = await getCollection("projects");
 
-const toDate = (dateString) => {
+const toDate = (dateString: Date) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-GB", {
     day: "numeric",
