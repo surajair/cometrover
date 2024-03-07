@@ -1,145 +1,35 @@
 ---
-import { ViewTransitions } from "astro:transitions";
-import BaseHead from "../components/BaseHead.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import DefaultLayout from "../layouts/DefaultLayout.astro";
 import { getCollection, getEntry } from "astro:content";
+import MarkdownContent from "../components/MarkdownContent.astro";
 
 const introMd = await getEntry("markDown", "intro");
 const { Content: IntroContent } = await introMd.render();
 const blogs = await getCollection("blog");
 ---
 
-<!doctype html>
-<html lang="en" class="dark">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    <ViewTransitions />
-  </head>
-  <body class="antialiased">
-    <header class="py-4 fixed bottom-0 border-t md:bottom-auto md:top-0 w-full z-20 border-b bg-white">
-      <nav class="max-w-6xl mx-auto w-full layout flex items-center justify-between">
-        <a
-          class="hover:text-slate-900 hover:dark:text-blue-200 px-5 underline-offset-2 font-semibold transition-all hover:scale-105"
-          href="/">
-          Comet Rover
-        </a>
-        <ul class="hidden md:flex items-center justify-between space-x-3 text-xs md:space-x-4 md:text-base">
-          <li>
-            <a
-              class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 capitalize"
-              href="/about">
-              About Me
-            </a>
+<DefaultLayout>
+  <div class="relative max-w-6xl mx-auto px-5 h-full pt-8 md:py-24">
+    <section class="mb-1 items-center flex">
+      <MarkdownContent content={IntroContent} />
+    </section>
+    <hr class="mt-12 mb-10" />
+    <h2 class="font-bold text-2xl">Posts:</h2>
+    <br />
+    <ul class="space-y-4">
+      {
+        blogs.map((blogPostEntry) => (
+          <li class="flex w-full justify-between">
+            <a href={`/blog/${blogPostEntry.slug}`}>{blogPostEntry.data.title}</a>
+            <time datetime={blogPostEntry.data.publishedDate.toISOString()}>
+              {blogPostEntry.data.publishedDate.toDateString()}
+            </time>
           </li>
-          <li>
-            <a
-              class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 capitalize"
-              href="/posts">
-              posts
-            </a>
-          </li>
-          <li>
-            <a
-              class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 capitalize"
-              href="/projects">
-              projects
-            </a>
-          </li>
-          <li>
-            <button
-              class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-sun h-[1.5rem] w-[1.3rem] dark:hidden">
-                <circle cx="12" cy="12" r="4"></circle>
-                <path d="M12 2v2"></path>
-                <path d="M12 20v2"></path>
-                <path d="m4.93 4.93 1.41 1.41"></path>
-                <path d="m17.66 17.66 1.41 1.41"></path>
-                <path d="M2 12h2"></path>
-                <path d="M20 12h2"></path>
-                <path d="m6.34 17.66-1.41 1.41"></path>
-                <path d="m19.07 4.93-1.41 1.41"></path>
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-moon hidden h-5 w-5 dark:block">
-                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-              </svg>
-              <span class="sr-only">Toggle theme</span>
-            </button>
-          </li>
-        </ul>
-        <div class="block md:hidden px-2">
-          <button
-            type="button"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-            aria-controls="radix-:R36lta:"
-            data-state="closed">
-            <span class="p-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-menu"
-                aria-label="open menu">
-                <line x1="4" x2="20" y1="12" y2="12"></line>
-                <line x1="4" x2="20" y1="6" y2="6"></line>
-                <line x1="4" x2="20" y1="18" y2="18"></line>
-              </svg>
-            </span>
-          </button>
-        </div>
-      </nav>
-    </header>
-    <div class="relative max-w-6xl mx-auto px-5 h-full pt-8 md:py-24">
-      <section class="mb-1 items-center flex">
-        <div class="prose mt-8 lg:prose-2xl home-intro prose-outstatic home-hero-fade">
-          <IntroContent />
-        </div>
-      </section>
-
-      <hr class="mt-12 mb-10" />
-      <h2 class="font-bold text-2xl">Posts:</h2>
-      <br />
-      <ul class="space-y-4">
-        {
-          blogs.map((blogPostEntry) => (
-            <li class="flex w-full justify-between">
-              <a href={`/blog/${blogPostEntry.slug}`}>{blogPostEntry.data.title}</a>
-              <time datetime={blogPostEntry.data.publishedDate.toISOString()}>
-                {blogPostEntry.data.publishedDate.toDateString()}
-              </time>
-            </li>
-          ))
-        }
-      </ul>
-      <hr class="mt-12 mb-10" />
-      <h2 class="font-bold text-2xl">Projects:</h2>
-      <br />
-    </div>
-  </body>
-</html>
+        ))
+      }
+    </ul>
+    <hr class="mt-12 mb-10" />
+    <h2 class="font-bold text-2xl">Projects:</h2>
+    <br />
+  </div>
+</DefaultLayout>
