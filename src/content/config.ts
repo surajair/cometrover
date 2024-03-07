@@ -18,4 +18,17 @@ const markDown = defineCollection({
   schema: z.object({}),
 });
 
-export const collections = { blog, markDown };
+const projects = defineCollection({
+  type: "data",
+  schema: z.object({
+    name: z.string(),
+    tagLine: z.string(),
+    description: z.string(),
+    github: z.string().optional(),
+    demo: z.string().optional(),
+    website: z.string(),
+    image: z.string(),
+  }),
+});
+
+export const collections = { blog, markDown, projects };

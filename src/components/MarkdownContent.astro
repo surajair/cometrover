@@ -1,7 +1,7 @@
 ---
-const { content: Content } = Astro.props;
+const { content: Content, size = "lg:prose-md" } = Astro.props;
 ---
 
-<div class="prose lg:prose-xl prose-outstatic">
+<div class={"prose max-w-full prose-outstatic " + size}>
   <Content />
 </div>

@@ -6,15 +6,25 @@ import MarkdownContent from "../components/MarkdownContent.astro";
 const introMd = await getEntry("markDown", "intro");
 const { Content: IntroContent } = await introMd.render();
 const blogs = await getCollection("blog");
+const projects = await getCollection("projects");
+
+const toDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
 ---
 
 <DefaultLayout>
   <div class="relative max-w-6xl mx-auto px-5 h-full pt-8 md:py-24">
     <section class="mb-1 items-center flex">
-      <MarkdownContent content={IntroContent} />
+      <MarkdownContent size="lg:prose-2xl" content={IntroContent} />
     </section>
     <hr class="mt-12 mb-10" />
-    <h2 class="font-bold text-2xl">Posts:</h2>
+    <h2 class="font-bold text-2xl" id="posts">Posts:</h2>
     <br />
     <ul class="space-y-4">
       {
@@ -22,14 +32,25 @@ const blogs = await getCollection("blog");
           <li class="flex w-full justify-between">
             <a href={`/blog/${blogPostEntry.slug}`}>{blogPostEntry.data.title}</a>
             <time datetime={blogPostEntry.data.publishedDate.toISOString()}>
-              {blogPostEntry.data.publishedDate.toDateString()}
+              {toDate(blogPostEntry.data.publishedDate)}
             </time>
           </li>
         ))
       }
     </ul>
     <hr class="mt-12 mb-10" />
-    <h2 class="font-bold text-2xl">Projects:</h2>
+    <h2 class="font-bold text-2xl" id="projects">Projects:</h2>
     <br />
+    <ul class="space-y-4">
+      {
+        projects.map((project) => (
+          <li class="flex w-full justify-between">
+            <a target="_blank" href={`${project.data.website}`}>
+              {project.data.name} - {project.data.tagLine}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </DefaultLayout>

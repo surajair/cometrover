@@ -1,12 +1,9 @@
 ---
 import { ViewTransitions } from "astro:transitions";
-import type { CollectionEntry } from "astro:content";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-
-type Props = CollectionEntry<"blog">["data"];
 
 const { title, description } = Astro.props;
 ---

@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import BlogPost from "../../layouts/DefaultLayout.astro";
+import DefaultLayout from "../../layouts/DefaultLayout.astro";
+import MarkdownContent from "../../components/MarkdownContent.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -13,8 +14,28 @@ type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
 const { Content } = await post.render();
+const toDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
 ---
 
-<BlogPost {...post.data}>
-  <Content />
-</BlogPost>
+<DefaultLayout {...post.data}>
+  <div class="mx-auto max-w-3xl pt-20">
+    <div class="py-10 pb-6">
+      <h2 class="text-3xl font-bold">{post.data.title}</h2>
+      <p class="mt-2">
+        <span class="bg-green-200 text-green-800 text-sm p-1 rounded-md"
+          >{post.data.tags?.map((tag) => `#${tag}`).join(", ")}</span
+        > | {toDate(post.data.publishedDate.toLocaleString())}
+      </p>
+    </div>
+    <hr />
+    <br />
+    <MarkdownContent content={Content} />
+  </div>
+</DefaultLayout>
