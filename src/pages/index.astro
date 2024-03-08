@@ -19,7 +19,7 @@ const toDate = (dateString: Date) => {
 ---
 
 <DefaultLayout>
-  <div class="relative max-w-6xl mx-auto px-5 h-full pt-8 md:py-24">
+  <div class="relative max-w-6xl mx-auto px-5 h-full pt-24 md:py-24">
     <section class="mb-1 items-center flex">
       <MarkdownContent size="lg:prose-2xl" content={IntroContent} />
     </section>
@@ -29,9 +29,10 @@ const toDate = (dateString: Date) => {
     <ul class="space-y-4">
       {
         blogs.map((blogPostEntry) => (
-          <li class="flex w-full justify-between">
+          <li class="md:flex w-full justify-between">
             <a href={`/blog/${blogPostEntry.slug}`}>{blogPostEntry.data.title}</a>
-            <time datetime={blogPostEntry.data.publishedDate.toISOString()}>
+            <br />
+            <time class="italic" datetime={blogPostEntry.data.publishedDate.toISOString()}>
               {toDate(blogPostEntry.data.publishedDate)}
             </time>
           </li>
