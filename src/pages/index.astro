@@ -2,10 +2,15 @@
 import DefaultLayout from "../layouts/DefaultLayout.astro";
 import { getCollection, getEntry } from "astro:content";
 import MarkdownContent from "../components/MarkdownContent.astro";
+import pkg from "lodash";
 
+const { sortBy } = pkg;
 const introMd = await getEntry("markDown", "intro");
 const { Content: IntroContent } = await introMd.render();
-const blogs = await getCollection("blog");
+const blogs = sortBy(
+  await getCollection("blog", ({ data }) => data.status === "published"),
+  (blog) => blog.data.publishedDate,
+).reverse();
 const projects = await getCollection("projects");
 
 const toDate = (dateString: Date) => {
